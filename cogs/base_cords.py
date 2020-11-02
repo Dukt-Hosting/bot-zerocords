@@ -9,20 +9,51 @@ from random import seed, randint
 class BaseCords(utils.Cog):
 
     @utils.command()
+    @commands.has_any_role(762460134307528764)
+    async def createcountrychannels(self, ctx:utils.Context, categoryname, countryprefix):
+        channeltypes = ['culture', 'news', 'economy', 'general', 'military', 'relations', 'projects', 'wars']
+        category = await ctx.guild.create_category(categoryname)
+        for name in channeltypes:
+            channel = await ctx.guild.create_text_channel(
+                f"{countryprefix}-{name}",
+                reason=f"Country ({countryprefix}) channels created!",
+                topic=f"{categoryname} - {name} ",
+                category=category,
+            )
+        await ctx.send(f'Channels made with the prefix of {countryprefix}!')
+
+    @utils.command()
+    @commands.has_any_role(762460134307528764)
+    async def removecountrychannels(self, ctx:utils.Context, categoryid:int):
+        cat = self.bot.get_channel(categoryid)
+        for channel in cat.text_channels:
+            await channel.delete()
+        for channel in cat.voice_channels:
+            await channel.delete()
+        await cat.delete()
+        await ctx.send(f'Removed the channels from {categoryid}')
+
+    @utils.command()
     @commands.has_any_role(762460134307528764, 762460123629092874)
     async def worldnews(self, ctx:utils.Context, country, *, info):
-        newsembed = discord.Embed(title=country.upper(), description = info, color=0x059fff)
-        channel = self.bot.get_channel(762451686098206730)
-        await channel.send('<@&762451734190227466>')
-        await channel.send(embed = newsembed)
+        with utils.Embed(use_random_colour=True) as e:
+            channel = self.bot.get_channel(762451686098206730)
+            e.title=country
+            e.description=info
+            e.set_author_to_user(ctx.author)
+            await channel.send('<@&762451734190227466>')
+            await channel.send(embed = e)
         
     @utils.command()
     @commands.has_any_role(762460134307528764, 762460123629092874)
     async def spacenews(self, ctx:utils.Context, country, *, info):
-        newsembed = discord.Embed(title=country.upper(), description = info, color=0x059fff)
-        channel = self.bot.get_channel(762453453842415617)
-        await channel.send('<@&762452130719989762>')
-        await channel.send(embed = newsembed)
+        with utils.Embed(use_random_colour=True) as e:
+            channel = self.bot.get_channel(762453453842415617)
+            e.title=country
+            e.description=info
+            e.set_author_to_user(ctx.author)
+            await channel.send('<@&762451734190227466>')
+            await channel.send(embed = e)
 
     @utils.command()
     @commands.has_any_role(762460134307528764)
