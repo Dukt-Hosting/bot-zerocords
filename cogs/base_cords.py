@@ -7,48 +7,67 @@ import random
 from random import seed, randint
 
 class BaseCords(utils.Cog):
+        
+    AUDIT_CHANNEL = 743724517108744212
+    WORLD_NEWS_CHANNEL = 743724517108744212
+    SPACE_NEWS_CHANNEL = 762453453842415617
 
-    @utils.command()
+    @utils.command(aliases=['ccc'])
     @commands.has_any_role(762460134307528764)
-    async def createcountrychannels(self, ctx:utils.Context, categoryname, countryprefix):
+    async def createcountrychannels(self, ctx:utils.Context, categoryname:str, countryprefix:str):
         channeltypes = ['culture', 'news', 'economy', 'general', 'military', 'relations', 'projects', 'wars']
         category = await ctx.guild.create_category(categoryname)
         for name in channeltypes:
             channel = await ctx.guild.create_text_channel(
                 f"{countryprefix}-{name}",
-                reason=f"Country ({countryprefix}) channels created!",
+                reason=f"Country ({countryprefix}) channels created, command ran by {ctx.author.name}",
                 topic=f"{categoryname} - {name} ",
                 category=category,
             )
         await ctx.send(f'Channels made with the prefix of {countryprefix}!')
+        with utils.Embed(use_random_colour=True) as e:
+            channel = self.bot.get_channel(self.AUDIT_CHANNEL)
+            e.title = f'Command Ran: ccc'
+            e.description= f'Category was created for {categoryname}!'
+            e.set_author_to_user(ctx.author)
+            await channel.send(embed = e)
 
-    @utils.command()
+    @utils.command(aliases=['rcc'])
     @commands.has_any_role(762460134307528764)
     async def removecountrychannels(self, ctx:utils.Context, categoryid:int):
         cat = self.bot.get_channel(categoryid)
+        cachename = cat.name
         for channel in cat.text_channels:
             await channel.delete()
         for channel in cat.voice_channels:
             await channel.delete()
         await cat.delete()
-        await ctx.send(f'Removed the channels from {categoryid}')
+        await ctx.send(f'Removed the channels from {cachename}')
+        with utils.Embed(use_random_colour=True) as e:
+            channel = self.bot.get_channel(self.AUDIT_CHANNEL)
+            e.title = f'Command Ran: rcc'
+            e.description= f'Category with the name of: {cachename} removed!'
+            e.set_author_to_user(ctx.author)
+            await channel.send(embed = e)
 
-    @utils.command()
+    @utils.command(aliases=['wn'])
     @commands.has_any_role(762460134307528764, 762460123629092874)
     async def worldnews(self, ctx:utils.Context, country, *, info):
+        async with utils.DatabaseConnection() as db:
+            await db
         with utils.Embed(use_random_colour=True) as e:
-            channel = self.bot.get_channel(762451686098206730)
-            e.title=country
+            channel = self.bot.get_channel(self.WORLD_NEWS_CHANNEL)
+            e.title=country.upper()
             e.description=info
             e.set_author_to_user(ctx.author)
             await channel.send('<@&762451734190227466>')
             await channel.send(embed = e)
         
-    @utils.command()
+    @utils.command(aliases=['sn'])
     @commands.has_any_role(762460134307528764, 762460123629092874)
     async def spacenews(self, ctx:utils.Context, country, *, info):
         with utils.Embed(use_random_colour=True) as e:
-            channel = self.bot.get_channel(762453453842415617)
+            channel = self.bot.get_channel(self.SPACE_NEWS_CHANNEL)
             e.title=country
             e.description=info
             e.set_author_to_user(ctx.author)

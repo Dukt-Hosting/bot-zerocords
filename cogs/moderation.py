@@ -5,6 +5,10 @@ from discord.ext import commands
 
 class Moderation(utils.Cog):
 
+    AUDIT_CHANNEL = 743724517108744212
+    WORLD_NEWS_CHANNEL = 743724517108744212
+    SPACE_NEWS_CHANNEL = 762453453842415617
+
     @utils.command()
     @commands.has_any_role(762460134307528764)
     async def kick(self, ctx:utils.Context, user:discord.Member, *, reason:str='<No reason provided>'):
@@ -37,6 +41,23 @@ class Moderation(utils.Cog):
 
         # Output to chat
         return await ctx.send(f"{user.mention} has been kicked by {ctx.author.mention} with reason `{reason}`.")
+
+    
+    @utils.command(aliases=['purge', 'clear', 'delete'])
+    @commands.has_any_role(762460134307528764)
+    async def _purgemsg(self, ctx:utils.Context, amount:int):
+        ctx.channel.purge(limit=amount+1)
+        with utils.Embed(use_random_colour=True) as e:
+            e.title = f'Cleared Messages!'
+            e.description= f'Cleared {amount} messages in this channel!'
+            await ctx.send(embed = e)
+        with utils.Embed(use_random_colour=True) as e:
+            channel = self.bot.get_channel(self.AUDIT_CHANNEL)
+            e.title = f'Command Ran: purge'
+            e.description= f'Cleared {amount} messages in {ctx.channel}'
+            e.set_author_to_user(ctx.author)
+            await channel.send(embed = e)
+
 
 
 def setup(bot:utils.Bot):
