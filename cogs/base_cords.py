@@ -8,8 +8,8 @@ from random import seed, randint
 
 class BaseCords(utils.Cog):
         
-    AUDIT_CHANNEL = 743724517108744212
-    WORLD_NEWS_CHANNEL = 743724517108744212
+    AUDIT_CHANNEL = 762455404625133598
+    WORLD_NEWS_CHANNEL = 762451686098206730
     SPACE_NEWS_CHANNEL = 762453453842415617
 
     @utils.command(aliases=['ccc'])
