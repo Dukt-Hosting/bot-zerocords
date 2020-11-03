@@ -53,8 +53,6 @@ class BaseCords(utils.Cog):
     @utils.command(aliases=['wn'])
     @commands.has_any_role(762460134307528764, 762460123629092874)
     async def worldnews(self, ctx:utils.Context, country, *, info):
-        async with utils.DatabaseConnection() as db:
-            await db
         with utils.Embed(use_random_colour=True) as e:
             channel = self.bot.get_channel(self.WORLD_NEWS_CHANNEL)
             e.title=country.upper()
