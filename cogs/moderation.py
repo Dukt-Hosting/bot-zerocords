@@ -5,8 +5,8 @@ from discord.ext import commands
 
 class Moderation(utils.Cog):
 
-    AUDIT_CHANNEL = 743724517108744212
-    WORLD_NEWS_CHANNEL = 743724517108744212
+    AUDIT_CHANNEL = 762455404625133598
+    WORLD_NEWS_CHANNEL = 762451686098206730
     SPACE_NEWS_CHANNEL = 762453453842415617
 
     @utils.command()
@@ -46,7 +46,7 @@ class Moderation(utils.Cog):
     @utils.command(aliases=['purge', 'clear', 'delete'])
     @commands.has_any_role(762460134307528764)
     async def _purgemsg(self, ctx:utils.Context, amount:int):
-        ctx.channel.purge(limit=amount+1)
+        await ctx.channel.purge(limit=amount+1)
         with utils.Embed(use_random_colour=True) as e:
             e.title = f'Cleared Messages!'
             e.description= f'Cleared {amount} messages in this channel!'
