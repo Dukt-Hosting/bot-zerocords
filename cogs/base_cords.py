@@ -125,6 +125,11 @@ class BaseCords(utils.Cog):
             sembed = discord.Embed(title = f'Roleplay Guidlines / Regulations', description = f'***Available Categorys:***', color = 0x059fff)
             sembed.add_field(name=f'`combat`', value=f'General Combat Guidelines', inline=True)
             await ctx.send(embed = sembed)
+
+    @utils.command(aliases=['wnr'])
+    async def worldnewsrole(self, ctx:utils.Context):
+        await ctx.author.add_roles(ctx.guild.get_role(762451734190227466))
+        await ctx.send('Gave you the world news role.')
 """
     @utils.command()
     async def wiki(self, ctx:utils.Context, *, countryname):
