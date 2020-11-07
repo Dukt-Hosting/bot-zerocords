@@ -11,10 +11,11 @@ class BaseCords(utils.Cog):
     AUDIT_CHANNEL = 762455404625133598
     WORLD_NEWS_CHANNEL = 762451686098206730
     SPACE_NEWS_CHANNEL = 762453453842415617
+    DEBUG_CHANNEL = 743724517108744212
 
     @utils.command(aliases=['ccc'])
     @commands.has_any_role(762460134307528764)
-    async def createcountrychannels(self, ctx:utils.Context, categoryname:str, countryprefix:str):
+    async def createcountrychannels(self, ctx:utils.Context, user:discord.Member, categoryname:str, countryprefix:str):
         channeltypes = ['culture', 'news', 'economy', 'general', 'military', 'relations', 'projects', 'wars']
         category = await ctx.guild.create_category(categoryname)
         for name in channeltypes:
@@ -24,6 +25,16 @@ class BaseCords(utils.Cog):
                 topic=f"{categoryname} - {name} ",
                 category=category,
             )
+        prichannel = await ctx.guild.create_text_channel(
+            f"{countryprefix}-private",
+            reason=f"Country ({countryprefix}) channels created, command ran by {ctx.author.name}",
+            topic=f"{categoryname} - private",
+            category=category,
+        )
+        role = await ctx.guild.create_role(reason='ZeroCords - Auto made a countrys role', hoist=True, name=categoryname)
+        await prichannel.set_permissions(role, read_messages=True)
+        await prichannel.set_permissions(ctx.guild.default_role, read_messages=False)
+        await user.add_roles(role)
         await ctx.send(f'Channels made with the prefix of {countryprefix}!')
         with utils.Embed(use_random_colour=True) as e:
             channel = self.bot.get_channel(self.AUDIT_CHANNEL)
@@ -37,6 +48,9 @@ class BaseCords(utils.Cog):
     async def removecountrychannels(self, ctx:utils.Context, categoryid:int):
         cat = self.bot.get_channel(categoryid)
         cachename = cat.name
+        for role in ctx.guild.roles:
+            if role.name == cachename:
+                await role.delete()
         for channel in cat.text_channels:
             await channel.delete()
         for channel in cat.voice_channels:
