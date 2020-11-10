@@ -68,6 +68,8 @@ class BaseCords(utils.Cog):
     @commands.has_any_role(762460134307528764, 762460123629092874)
     async def worldnews(self, ctx:utils.Context, country, *, info):
         with utils.Embed(use_random_colour=True) as e:
+            if len(ctx.message.attachments) > 0:
+                e.set_image(url=ctx.message.attachments[0].url)
             channel = self.bot.get_channel(self.WORLD_NEWS_CHANNEL)
             e.title=country.upper()
             e.description=info
@@ -79,6 +81,8 @@ class BaseCords(utils.Cog):
     @commands.has_any_role(762460134307528764, 762460123629092874)
     async def spacenews(self, ctx:utils.Context, country, *, info):
         with utils.Embed(use_random_colour=True) as e:
+            if len(ctx.message.attachments) > 0:
+                e.set_image(url=ctx.message.attachments[0].url)
             channel = self.bot.get_channel(self.SPACE_NEWS_CHANNEL)
             e.title=country
             e.description=info

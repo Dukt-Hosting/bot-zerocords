@@ -1,6 +1,8 @@
 CREATE TABLE IF NOT EXISTS guild_settings(
     guild_id BIGINT PRIMARY KEY,
-    prefix VARCHAR(30)
+    prefix VARCHAR(30),
+    worldnewsch BIGINT,
+    spacenewsch BIGINT
 );
 
 
@@ -25,6 +27,7 @@ CREATE TABLE IF NOT EXISTS channel_list(
     value VARCHAR(50),
     PRIMARY KEY (guild_id, channel_id, key)
 );
+
 
 CREATE TABLE IF NOT EXISTS infractions(
     guild_id BIGINT,
