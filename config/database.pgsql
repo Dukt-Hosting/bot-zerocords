@@ -1,8 +1,10 @@
 CREATE TABLE IF NOT EXISTS guild_settings(
     guild_id BIGINT PRIMARY KEY,
     prefix VARCHAR(30),
-    worldnewsch BIGINT,
-    spacenewsch BIGINT
+    worldnews_channel BIGINT,
+    spacenews_channel BIGINT,
+    audit_channel BIGINT
+    
 );
 
 

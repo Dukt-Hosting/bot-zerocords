@@ -9,8 +9,10 @@ from random import seed, randint
 class BaseCords(utils.Cog):
 
     @utils.command(aliases=['ccc'])
-    @commands.has_any_role(762460134307528764)
+    @commands.has_permissions(manage_channels=True)
     async def createcountrychannels(self, ctx:utils.Context, user:discord.Member, categoryname:str, countryprefix:str):
+        async with self.bot.database() as db:
+            audit_channel = await db("SELECT audit_channel FROM guild_settings WHERE guild_id=$1", ctx.guild.id)
         channeltypes = ['culture', 'news', 'economy', 'general', 'military', 'relations', 'projects', 'wars']
         category = await ctx.guild.create_category(categoryname)
         for name in channeltypes:
@@ -31,16 +33,22 @@ class BaseCords(utils.Cog):
         await prichannel.set_permissions(ctx.guild.default_role, read_messages=False)
         await user.add_roles(role)
         await ctx.send(f'Channels made with the prefix of {countryprefix}!')
-        with utils.Embed(use_random_colour=True) as e:
-            channel = self.bot.get_channel(self.AUDIT_CHANNEL)
-            e.title = f'Command Ran: ccc'
-            e.description= f'Category was created for {categoryname}!'
-            e.set_author_to_user(ctx.author)
-            await channel.send(embed = e)
+        if str(audit_channel[0]["audit_channel"]) == "none":
+            return
+        else:
+            with utils.Embed(use_random_colour=True) as e:
+                channel = self.bot.get_channel(audit_channel[0]["audit_channel"])
+                e.title = f'Command Ran: ccc'
+                e.description= f'Category was created for {categoryname}!'
+                e.set_author_to_user(ctx.author)
+                await channel.send(embed = e)
 
     @utils.command(aliases=['rcc'])
-    @commands.has_any_role(762460134307528764)
+    @commands.has_permissions(manage_channels=True)
     async def removecountrychannels(self, ctx:utils.Context, categoryid:int):
+        async with self.bot.database() as db:
+            audit_channel = await db("SELECT audit_channel FROM guild_settings WHERE guild_id=$1", ctx.guild.id)
+            news_role = await db('SELECT news_role FROM guild_settings WHERE guild_id=$1', ctx.guild.id)
         cat = self.bot.get_channel(categoryid)
         cachename = cat.name
         for role in ctx.guild.roles:
@@ -52,44 +60,48 @@ class BaseCords(utils.Cog):
             await channel.delete()
         await cat.delete()
         await ctx.send(f'Removed the channels from {cachename}')
-        with utils.Embed(use_random_colour=True) as e:
-            channel = self.bot.get_channel(self.AUDIT_CHANNEL)
-            e.title = f'Command Ran: rcc'
-            e.description= f'Category with the name of: {cachename} removed!'
-            e.set_author_to_user(ctx.author)
-            await channel.send(embed = e)
+        if audit_channel[0]["audit_channel"] is None:
+            return
+        else:
+            with utils.Embed(use_random_colour=True) as e:
+                channel = self.bot.get_channel(audit_channel[0]["audit_channel"])
+                e.title = f'Command Ran: rcc'
+                e.description= f'Category with the name of: {cachename} removed!'
+                e.set_author_to_user(ctx.author)
+                await channel.send(embed = e)
 
     @utils.command(aliases=['wn'])
-    @commands.has_any_role(762460134307528764, 762460123629092874)
+    @commands.has_permissions(send_messages=True)
     async def worldnews(self, ctx:utils.Context, country, *, info):
         with utils.Embed(use_random_colour=True) as e:
             async with self.bot.database() as db:
-                data = await db("SELECT worldnewsch FROM guild_settings WHERE guild_id=$1", ctx.guild.id)
+                worldnews_channel = await db("SELECT worldnews_channel FROM guild_settings WHERE guild_id=$1", ctx.guild.id)
+                news_role = await db('SELECT news_role FROM guild_settings WHERE guild_id=$1', ctx.guild.id)
             if len(ctx.message.attachments) > 0:
                 e.set_image(url=ctx.message.attachments[0].url)
-            channel = self.bot.get_channel(data[0]["worldnewsch"])
+            channel = self.bot.get_channel(worldnews_channel[0]["worldnews_channel"])
             e.title=country.upper()
             e.description=info
             e.set_author_to_user(ctx.author)
-            await channel.send('<@&762451734190227466>', embed = e)
+            await channel.send(f'<@&{news_role[0]["news_role"]}>', embed = e)
         
     @utils.command(aliases=['sn'])
-    @commands.has_any_role(762460134307528764, 762460123629092874)
+    @commands.has_permissions(send_messages=True)
     async def spacenews(self, ctx:utils.Context, country, *, info):
         with utils.Embed(use_random_colour=True) as e:
             async with self.bot.database() as db:
-                data = await db("SELECT spacenewsch FROM guild_settings WHERE guild_id=$1", ctx.guild.id)
+                spacenews_channel = await db("SELECT spacenews_channel FROM guild_settings WHERE guild_id=$1", ctx.guild.id)
+                news_role = await db('SELECT news_role FROM guild_settings WHERE guild_id=$1', ctx.guild.id)
             if len(ctx.message.attachments) > 0:
                 e.set_image(url=ctx.message.attachments[0].url)
-            channel = self.bot.get_channel(data[0]["spacenewsch"])
+            channel = self.bot.get_channel(spacenews_channel[0]["spacenews_channel"])
             e.title=country
             e.description=info
             e.set_author_to_user(ctx.author)
-            await channel.send('<@&762451734190227466>')
-            await channel.send(embed = e)
+            await channel.send(f'<@&{news_role[0]["news_role"]}>', embed=e)
 
     @utils.command()
-    @commands.has_any_role(762460134307528764)
+    @commands.has_permissions(manage_roles=True)
     async def setcountry(self, ctx:utils.Context, member : discord.Member, role : discord.Role):
         '''Adds user to a country and adds them to the database'''
         await member.add_roles(role)
@@ -97,7 +109,7 @@ class BaseCords(utils.Cog):
         await ctx.send(embed = embedvar)
         
     @utils.command()
-    @commands.has_any_role(762460134307528764)
+    @commands.has_permissions(manage_roles=True)
     async def removecountry(self, ctx:utils.Context, member : discord.Member, roletoremove : discord.Role):
         await member.remove_roles(roletoremove)
         embedvar = discord.Embed(title = f'Succesfully Removed The Role!', description = f'Succesfully Removed {roletoremove.mention} From {member.mention}!', color=0x059fff)
@@ -128,7 +140,7 @@ class BaseCords(utils.Cog):
             sembed.add_field(name=f'`combat`', value=f'General Combat Guidelines', inline=True)
             await ctx.send(embed = sembed)
 
-    @utils.command(aliases=['wnr'])
+    @utils.command(aliases=['nr'])
     async def worldnewsrole(self, ctx:utils.Context):
         await ctx.author.add_roles(ctx.guild.get_role(762451734190227466))
         await ctx.send('Gave you the world news role.')
