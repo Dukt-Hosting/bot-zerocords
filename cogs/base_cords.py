@@ -7,11 +7,6 @@ import random
 from random import seed, randint
 
 class BaseCords(utils.Cog):
-        
-    AUDIT_CHANNEL = 762455404625133598
-    WORLD_NEWS_CHANNEL = 762451686098206730
-    SPACE_NEWS_CHANNEL = 762453453842415617
-    DEBUG_CHANNEL = 743724517108744212
 
     @utils.command(aliases=['ccc'])
     @commands.has_any_role(762460134307528764)
@@ -68,22 +63,25 @@ class BaseCords(utils.Cog):
     @commands.has_any_role(762460134307528764, 762460123629092874)
     async def worldnews(self, ctx:utils.Context, country, *, info):
         with utils.Embed(use_random_colour=True) as e:
+            async with self.bot.database() as db:
+                data = await db("SELECT worldnewsch FROM guild_settings WHERE guild_id=$1", ctx.guild.id)
             if len(ctx.message.attachments) > 0:
                 e.set_image(url=ctx.message.attachments[0].url)
-            channel = self.bot.get_channel(self.WORLD_NEWS_CHANNEL)
+            channel = self.bot.get_channel(data[0]["worldnewsch"])
             e.title=country.upper()
             e.description=info
             e.set_author_to_user(ctx.author)
-            await channel.send('<@&762451734190227466>')
-            await channel.send(embed = e)
+            await channel.send('<@&762451734190227466>', embed = e)
         
     @utils.command(aliases=['sn'])
     @commands.has_any_role(762460134307528764, 762460123629092874)
     async def spacenews(self, ctx:utils.Context, country, *, info):
         with utils.Embed(use_random_colour=True) as e:
+            async with self.bot.database() as db:
+                data = await db("SELECT spacenewsch FROM guild_settings WHERE guild_id=$1", ctx.guild.id)
             if len(ctx.message.attachments) > 0:
                 e.set_image(url=ctx.message.attachments[0].url)
-            channel = self.bot.get_channel(self.SPACE_NEWS_CHANNEL)
+            channel = self.bot.get_channel(data[0]["spacenewsch"])
             e.title=country
             e.description=info
             e.set_author_to_user(ctx.author)
