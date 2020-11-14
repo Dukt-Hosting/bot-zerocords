@@ -33,6 +33,41 @@ class BaseCords(utils.Cog):
         await prichannel.set_permissions(ctx.guild.default_role, read_messages=False)
         await user.add_roles(role)
         await ctx.send(f'Channels made with the prefix of {countryprefix}!')
+        if str(audit_channel[0]["audit_channel"]) == "None":
+            return
+        else:
+            with utils.Embed(use_random_colour=True) as e:
+                channel = self.bot.get_channel(audit_channel[0]["audit_channel"])
+                e.title = f'Command Ran: ccc'
+                e.description= f'Category was created for {categoryname}!'
+                e.set_author_to_user(ctx.author)
+                await channel.send(embed = e)
+    
+    @utils.command(aliases=['ccs'])
+    @commands.has_permissions(manage_channels=True)
+    async def createcompanychannels(self, ctx:utils.Context, user:discord.Member, categoryname:str, countryprefix:str):
+        async with self.bot.database() as db:
+            audit_channel = await db("SELECT audit_channel FROM guild_settings WHERE guild_id=$1", ctx.guild.id)
+        channeltypes = ['info', 'worth', 'general', 'projects']
+        category = await ctx.guild.create_category(categoryname)
+        for name in channeltypes:
+            channel = await ctx.guild.create_text_channel(
+                f"{countryprefix}-{name}",
+                reason=f"Country ({countryprefix}) channels created, command ran by {ctx.author.name}",
+                topic=f"{categoryname} - {name} ",
+                category=category,
+            )
+        prichannel = await ctx.guild.create_text_channel(
+            f"{countryprefix}-private",
+            reason=f"Country ({countryprefix}) channels created, command ran by {ctx.author.name}",
+            topic=f"{categoryname} - private",
+            category=category,
+        )
+        role = await ctx.guild.create_role(reason='ZeroCords - Auto made a countrys role', hoist=True, name=categoryname)
+        await prichannel.set_permissions(role, read_messages=True)
+        await prichannel.set_permissions(ctx.guild.default_role, read_messages=False)
+        await user.add_roles(role)
+        await ctx.send(f'Channels made with the prefix of {countryprefix}!')
         if str(audit_channel[0]["audit_channel"]) == "none":
             return
         else:
@@ -43,12 +78,11 @@ class BaseCords(utils.Cog):
                 e.set_author_to_user(ctx.author)
                 await channel.send(embed = e)
 
-    @utils.command(aliases=['rcc'])
+    @utils.command(aliases=['rcs'])
     @commands.has_permissions(manage_channels=True)
-    async def removecountrychannels(self, ctx:utils.Context, categoryid:int):
+    async def removechannelsets(self, ctx:utils.Context, categoryid:int):
         async with self.bot.database() as db:
             audit_channel = await db("SELECT audit_channel FROM guild_settings WHERE guild_id=$1", ctx.guild.id)
-            news_role = await db('SELECT news_role FROM guild_settings WHERE guild_id=$1', ctx.guild.id)
         cat = self.bot.get_channel(categoryid)
         cachename = cat.name
         for role in ctx.guild.roles:
