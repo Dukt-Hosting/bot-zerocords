@@ -68,7 +68,7 @@ class BaseCords(utils.Cog):
         await prichannel.set_permissions(ctx.guild.default_role, read_messages=False)
         await user.add_roles(role)
         await ctx.send(f'Channels made with the prefix of {countryprefix}!')
-        if str(audit_channel[0]["audit_channel"]) == "none":
+        if str(audit_channel[0]["audit_channel"]) == "None":
             return
         else:
             with utils.Embed(use_random_colour=True) as e:
