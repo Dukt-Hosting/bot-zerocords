@@ -111,9 +111,9 @@ class BaseCords(utils.Cog):
             async with self.bot.database() as db:
                 worldnews_channel = await db("SELECT worldnews_channel FROM guild_settings WHERE guild_id=$1", ctx.guild.id)
                 news_role = await db('SELECT news_role FROM guild_settings WHERE guild_id=$1', ctx.guild.id)
+            channel = self.bot.get_channel(worldnews_channel[0]["worldnews_channel"])
             if len(ctx.message.attachments) > 0:
                 e.set_image(url=ctx.message.attachments[0].url)
-            channel = self.bot.get_channel(worldnews_channel[0]["worldnews_channel"])
             e.title=country.upper()
             e.description=info
             e.set_author_to_user(ctx.author)
@@ -126,9 +126,9 @@ class BaseCords(utils.Cog):
             async with self.bot.database() as db:
                 spacenews_channel = await db("SELECT spacenews_channel FROM guild_settings WHERE guild_id=$1", ctx.guild.id)
                 news_role = await db('SELECT news_role FROM guild_settings WHERE guild_id=$1', ctx.guild.id)
+            channel = self.bot.get_channel(spacenews_channel[0]["spacenews_channel"])
             if len(ctx.message.attachments) > 0:
                 e.set_image(url=ctx.message.attachments[0].url)
-            channel = self.bot.get_channel(spacenews_channel[0]["spacenews_channel"])
             e.title=country
             e.description=info
             e.set_author_to_user(ctx.author)
