@@ -46,6 +46,8 @@ class BaseCords(utils.Cog):
     @utils.command(aliases=['ccs'])
     @commands.has_permissions(manage_channels=True)
     async def createcompanychannels(self, ctx:utils.Context, user:discord.Member, categoryname:str, countryprefix:str):
+        if ctx.guild is None:
+            await ctx.send("Hey there! :wave:. You tried to run a command that can't be used outside servers!.")
         async with self.bot.database() as db:
             audit_channel = await db("SELECT audit_channel FROM guild_settings WHERE guild_id=$1", ctx.guild.id)
         channeltypes = ['info', 'worth', 'general', 'projects']
@@ -68,7 +70,7 @@ class BaseCords(utils.Cog):
         await prichannel.set_permissions(ctx.guild.default_role, read_messages=False)
         await user.add_roles(role)
         await ctx.send(f'Channels made with the prefix of {countryprefix}!')
-        if str(audit_channel[0]["audit_channel"]) == "None":
+        if audit_channel == None:
             return
         else:
             with utils.Embed(use_random_colour=True) as e:
@@ -150,7 +152,7 @@ class BaseCords(utils.Cog):
         await ctx.send(embed = embedvar)
         
     @utils.command()
-    async def roll(self, ctx:utils.Context, sides):
+    async def roll(self, ctx:utils.Context, sides:int):
         '''Roll A Dice And Go!'''
         await ctx.send(f'Grabbing The D{sides}')
         for _ in range(1):
