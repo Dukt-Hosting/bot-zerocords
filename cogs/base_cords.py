@@ -162,22 +162,17 @@ class BaseCords(utils.Cog):
         sembed.add_field(name='Dice: ', value=f'D{sides}', inline=True)
         await ctx.send(embed = sembed)
         
-    @utils.command(hidden=True)
-    async def guidelines(self, ctx:utils.Context, choice=None):
-        if choice != None:
-            if choice == 'combat':
-                sembed = discord.Embed(title = f'Combat Guidelines / Regulations', description = f'***The Guidelines And Rules For Combat***', color = 0x059fff)
-                sembed.add_field(name=f'Combat:', value=f'1. In this server you use dice to decide the outcome of actions. \n 2. To Roll A Dice Use "n!roll 20" \n 3. The higher you roll the higher the attack/defence is. \n 4. There will be a game master in every war/battle. Ping a staff member for a gamemaster. \n ***Base your rolls on 1-20 with 1 being the worst and 20 the best.***', inline=True)
-                await ctx.send(embed = sembed)
-        if choice == None:
-            sembed = discord.Embed(title = f'Roleplay Guidlines / Regulations', description = f'***Available Categorys:***', color = 0x059fff)
-            sembed.add_field(name=f'`combat`', value=f'General Combat Guidelines', inline=True)
-            await ctx.send(embed = sembed)
 
-    @utils.command(aliases=['nr'], hidden=True)
+    @utils.command(aliases=['wnr'])
     async def worldnewsrole(self, ctx:utils.Context):
-        await ctx.author.add_roles(ctx.guild.get_role(762451734190227466))
-        await ctx.send('Gave you the world news role.')
+        """Give you the worldnews role"""
+        async with self.bot.database() as db:
+            news_role = await db('SELECT news_role FROM guild_settings WHERE guild_id=$1', ctx.guild.id)
+        if channel is None:
+            await ctx.send(f'Looks like this server has not setup a news role, ask a admin to do it with `{ctx.clean_prefix}setup`')
+        else:
+            await ctx.author.add_roles(ctx.guild.get_role(news_role))
+            await ctx.send('Gave you the world news role.')
 """
     @utils.command()
     async def wiki(self, ctx:utils.Context, *, countryname):
