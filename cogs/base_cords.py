@@ -162,7 +162,7 @@ class BaseCords(utils.Cog):
         sembed.add_field(name='Dice: ', value=f'D{sides}', inline=True)
         await ctx.send(embed = sembed)
         
-    @utils.command()
+    @utils.command(hidden=True)
     async def guidelines(self, ctx:utils.Context, choice=None):
         if choice != None:
             if choice == 'combat':
@@ -174,7 +174,7 @@ class BaseCords(utils.Cog):
             sembed.add_field(name=f'`combat`', value=f'General Combat Guidelines', inline=True)
             await ctx.send(embed = sembed)
 
-    @utils.command(aliases=['nr'])
+    @utils.command(aliases=['nr'], hidden=True)
     async def worldnewsrole(self, ctx:utils.Context):
         await ctx.author.add_roles(ctx.guild.get_role(762451734190227466))
         await ctx.send('Gave you the world news role.')
