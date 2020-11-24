@@ -169,7 +169,7 @@ class BaseCords(utils.Cog):
         async with self.bot.database() as db:
             news_role_db = await db('SELECT news_role FROM guild_settings WHERE guild_id=$1', ctx.guild.id)
         news_role = news_role_db[0]["news_role"]
-        if channel is None:
+        if news_role is None:
             await ctx.send(f'Looks like this server has not setup a news role, ask a admin to do it with `{ctx.clean_prefix}setup`')
         else:
             await ctx.author.add_roles(ctx.guild.get_role(news_role))
