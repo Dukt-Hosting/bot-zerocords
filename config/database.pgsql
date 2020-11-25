@@ -41,6 +41,11 @@ CREATE TABLE IF NOT EXISTS channel_list(
     PRIMARY KEY (guild_id, channel_id, key)
 );
 
+DO $$ BEGIN
+    CREATE TYPE moderation_action AS ENUM ('Mute', 'Warn', 'Kick', 'Ban', 'Unmute', 'Verify', 'Tempmute', 'Unban');
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
 
 CREATE TABLE IF NOT EXISTS infractions(
     infraction_id VARCHAR(10) PRIMARY KEY,
