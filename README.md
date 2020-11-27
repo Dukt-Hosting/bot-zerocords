@@ -2,6 +2,8 @@
 
 The multi purpose discord bot that provides a multitude of features.
 
+[![Discord Bots](https://top.gg/api/widget/752346510523629669.svg)](https://top.gg/bot/752346510523629669)
+
 ## Features
 
 Zerocords is built with [discord.py](https://github.com/Rapptz/discord.py) and [voxelbotutils](https://github.com/voxel-fox-ltd/voxelbotutils)
