@@ -71,6 +71,7 @@ class InfractionHandler(utils.Cog):
         # Make info embed
         with utils.Embed() as embed:
             embed.title = action
+            embed.set_author_to_user(moderator)
             embed.add_field("Moderator", f"{moderator.mention} (`{moderator.id}`)")
             embed.add_field("User", f"<@{user.id}> (`{user.id}`)")
             if reason:

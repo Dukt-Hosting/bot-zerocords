@@ -8,6 +8,15 @@ from random import seed, randint
 
 class BaseCords(utils.Cog):
 
+    @utils.command(aliases=['suggest'])
+    async def suggestion(self, ctx, *, suggestion:str):
+        guild = self.bot.get_guild(750337633338654813)
+        channel = guild.get_channel(781708362563584001)
+        with utils.Embed(use_random_colour=True) as embed:
+            embed.title = "Zerocords Suggestion"
+            embed.description = f"Guild:\n```{ctx.guild.id}```\n\nUser:\n```({ctx.author.id}/{ctx.author.name}#{ctx.author.discriminator})```\n\nSuggestion:```\n{suggestion}```"
+            await channel.send(embed=embed)
+
     @utils.command(aliases=['ccc'])
     @commands.has_permissions(manage_channels=True)
     async def createcountrychannels(self, ctx:utils.Context, user:discord.Member, categoryname:str, countryprefix:str):
