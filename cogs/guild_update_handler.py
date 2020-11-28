@@ -62,7 +62,7 @@ class GuildUpdateHandler(utils.Cog):
     
     @utils.Cog.listener()
     async def on_guild_channel_update(self, before:discord.TextChannel, after:discord.TextChannel):
-        async for entry in before.guild.audit_logs(action=discord.AuditLogAction.channel_delete, limit=1):
+        async for entry in before.guild.audit_logs(action=discord.AuditLogAction.channel_update, limit=1):
             if entry.user.bot == True:
                 break
             with utils.Embed(use_random_colour=True) as embed:
