@@ -63,7 +63,6 @@ class BotSettings(utils.Cog):
         )
         try:
             await menu.start(ctx)
-            await ctx.send("Done setting up!")
         except utils.errors.InvokedMetaCommand:
             pass
 
@@ -111,10 +110,19 @@ class BotSettings(utils.Cog):
                 'converter_args': [("What channel do you want deleted message logs to go to?", "VC update archive", commands.TextChannelConverter)],
                 'callback': utils.SettingsMenuOption.get_set_guild_settings_callback('guild_settings', 'voice_update_modlog_channel_id'),
             },
+            {
+                'display': lambda c: "Guild update log channel (currently {0})".format(settings_mention(c, 'guild_update_channel_id')),
+                'converter_args': [("Where do you want guild updates to go??", "Guild Update Channel", commands.TextChannelConverter)],
+                'callback': utils.SettingsMenuOption.get_set_guild_settings_callback('guild_settings', 'guild_update_channel_id'),
+            },
+            {
+                'display': lambda c: "Roleplay Audit Log Channel (currently {0})".format(settings_mention(c, 'audit_channel')),
+                'converter_args': [("What do you want to set the Audit Log channel to?", "Audit Log Channel", commands.TextChannelConverter)],
+                'callback': utils.SettingsMenuOption.get_set_guild_settings_callback('guild_settings', 'audit_channel'),
+            },
         )
         try:
             await menu.start(ctx)
-            await ctx.send("Done setting up!")
         except utils.errors.InvokedMetaCommand:
             pass
     
@@ -143,11 +151,6 @@ class BotSettings(utils.Cog):
                 'callback': utils.SettingsMenuOption.get_set_guild_settings_callback('guild_settings', 'spacenews_channel'),
             },
             {
-                'display': lambda c: "Set Audit Log channel (currently {0})".format(settings_mention(c, 'audit_channel')),
-                'converter_args': [("What do you want to set the Audit Log channel to?", "Audit Log Channel", commands.TextChannelConverter)],
-                'callback': utils.SettingsMenuOption.get_set_guild_settings_callback('guild_settings', 'audit_channel'),
-            },
-            {
                 'display': lambda c: "Set News notification role (currently {0})".format(settings_mention(c, 'news_role')),
                 'converter_args': [("What do you want to set News Notification Role to?", "News Notification Role", commands.RoleConverter)],
                 'callback': utils.SettingsMenuOption.get_set_guild_settings_callback('guild_settings', 'news_role'),
@@ -155,7 +158,6 @@ class BotSettings(utils.Cog):
         )
         try:
             await menu.start(ctx)
-            await ctx.send("Done setting up!")
         except utils.errors.InvokedMetaCommand:
             pass
 
