@@ -27,13 +27,13 @@ class BaseCords(utils.Cog):
         for name in channeltypes:
             channel = await ctx.guild.create_text_channel(
                 f"{countryprefix}-{name}",
-                reason=f"Country ({countryprefix}) channels created, command ran by {ctx.author.name}",
+                reason=f"Country ({countryprefix}) channels created, command ran by {ctx.author.name}({ctx.author.id})",
                 topic=f"{categoryname} - {name} ",
                 category=category,
             )
         prichannel = await ctx.guild.create_text_channel(
             f"{countryprefix}-private",
-            reason=f"Country ({countryprefix}) channels created, command ran by {ctx.author.name}",
+            reason=f"Country ({countryprefix}) channels created, command ran by {ctx.author.name}({ctx.author.id})",
             topic=f"{categoryname} - private",
             category=category,
         )
@@ -64,13 +64,13 @@ class BaseCords(utils.Cog):
         for name in channeltypes:
             channel = await ctx.guild.create_text_channel(
                 f"{countryprefix}-{name}",
-                reason=f"Country ({countryprefix}) channels created, command ran by {ctx.author.name}",
+                reason=f"Country ({countryprefix}) channels created, command ran by {ctx.author.name}({ctx.author.id})",
                 topic=f"{categoryname} - {name} ",
                 category=category,
             )
         prichannel = await ctx.guild.create_text_channel(
             f"{countryprefix}-private",
-            reason=f"Country ({countryprefix}) channels created, command ran by {ctx.author.name}",
+            reason=f"Country ({countryprefix}) channels created, command ran by {ctx.author.name}({ctx.author.id})",
             topic=f"{categoryname} - private",
             category=category,
         )
