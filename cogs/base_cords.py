@@ -10,6 +10,7 @@ class BaseCords(utils.Cog):
 
     @utils.command(aliases=['suggest'])
     async def suggestion(self, ctx, *, suggestion:str):
+        """Sends a suggestion in to bot developers"""
         guild = self.bot.get_guild(750337633338654813)
         channel = guild.get_channel(781708362563584001)
         with utils.Embed(use_random_colour=True) as embed:
@@ -20,6 +21,7 @@ class BaseCords(utils.Cog):
     @utils.command(aliases=['ccc'])
     @commands.has_permissions(manage_channels=True)
     async def createcountrychannels(self, ctx:utils.Context, user:discord.Member, categoryname:str, countryprefix:str):
+        """Creates channels for a country"""
         async with self.bot.database() as db:
             audit_channel = await db("SELECT audit_channel FROM guild_settings WHERE guild_id=$1", ctx.guild.id)
         channeltypes = ['culture', 'news', 'economy', 'general', 'military', 'relations', 'projects', 'wars']
@@ -55,6 +57,7 @@ class BaseCords(utils.Cog):
     @utils.command(aliases=['ccs'])
     @commands.has_permissions(manage_channels=True)
     async def createcompanychannels(self, ctx:utils.Context, user:discord.Member, categoryname:str, countryprefix:str):
+        """Creates channels for a company"""
         if ctx.guild is None:
             await ctx.send("Hey there! :wave:. You tried to run a command that can't be used outside servers!.")
         async with self.bot.database() as db:
@@ -92,6 +95,7 @@ class BaseCords(utils.Cog):
     @utils.command(aliases=['rcs'])
     @commands.has_permissions(manage_channels=True)
     async def removechannelsets(self, ctx:utils.Context, categoryid:int):
+        """Removes channels from a category"""
         async with self.bot.database() as db:
             audit_channel = await db("SELECT audit_channel FROM guild_settings WHERE guild_id=$1", ctx.guild.id)
         cat = self.bot.get_channel(categoryid)
@@ -118,6 +122,7 @@ class BaseCords(utils.Cog):
     @utils.command(aliases=['wn'])
     @commands.has_permissions(send_messages=True)
     async def worldnews(self, ctx:utils.Context, country, *, info):
+        """Sends text to the set worldnews channel"""
         with utils.Embed(use_random_colour=True) as e:
             async with self.bot.database() as db:
                 worldnews_channel = await db("SELECT worldnews_channel FROM guild_settings WHERE guild_id=$1", ctx.guild.id)
@@ -133,6 +138,7 @@ class BaseCords(utils.Cog):
     @utils.command(aliases=['sn'])
     @commands.has_permissions(send_messages=True)
     async def spacenews(self, ctx:utils.Context, country, *, info):
+        """Sends text to the set spacenews channel"""
         with utils.Embed(use_random_colour=True) as e:
             async with self.bot.database() as db:
                 spacenews_channel = await db("SELECT spacenews_channel FROM guild_settings WHERE guild_id=$1", ctx.guild.id)
@@ -148,7 +154,7 @@ class BaseCords(utils.Cog):
     @utils.command()
     @commands.has_permissions(manage_roles=True)
     async def setcountry(self, ctx:utils.Context, member : discord.Member, role : discord.Role):
-        '''Adds user to a country and adds them to the database'''
+        """Gives a user a role"""
         await member.add_roles(role)
         embedvar = discord.Embed(title = f'Succesfully Added The Role!', description = f'Succesfully Added {role.mention} To {member.mention}!', color=0x059fff)
         await ctx.send(embed = embedvar)
