@@ -20,6 +20,7 @@ class BaseCords(utils.Cog):
 
     @utils.command(aliases=['ccc'])
     @commands.has_permissions(manage_channels=True)
+    @commands.guild_only()
     async def createcountrychannels(self, ctx:utils.Context, user:discord.Member, categoryname:str, countryprefix:str):
         """Creates channels for a country"""
         async with self.bot.database() as db:
@@ -56,10 +57,9 @@ class BaseCords(utils.Cog):
     
     @utils.command(aliases=['ccs'])
     @commands.has_permissions(manage_channels=True)
+    @commands.guild_only()
     async def createcompanychannels(self, ctx:utils.Context, user:discord.Member, categoryname:str, countryprefix:str):
         """Creates channels for a company"""
-        if ctx.guild is None:
-            await ctx.send("Hey there! :wave:. You tried to run a command that can't be used outside servers!.")
         async with self.bot.database() as db:
             audit_channel = await db("SELECT audit_channel FROM guild_settings WHERE guild_id=$1", ctx.guild.id)
         channeltypes = ['info', 'worth', 'general', 'projects']
@@ -99,6 +99,7 @@ class BaseCords(utils.Cog):
 
     @utils.command(aliases=['rcs'])
     @commands.has_permissions(manage_channels=True)
+    @commands.guild_only()
     async def removechannelsets(self, ctx:utils.Context, categoryid:int):
         """Removes channels from a category"""
         async with self.bot.database() as db:
@@ -126,6 +127,7 @@ class BaseCords(utils.Cog):
 
     @utils.command(aliases=['wn'])
     @commands.has_permissions(send_messages=True)
+    @commands.guild_only()
     async def worldnews(self, ctx:utils.Context, country, *, info):
         """Sends text to the set worldnews channel"""
         with utils.Embed(use_random_colour=True) as e:
@@ -142,6 +144,7 @@ class BaseCords(utils.Cog):
         
     @utils.command(aliases=['sn'])
     @commands.has_permissions(send_messages=True)
+    @commands.guild_only()
     async def spacenews(self, ctx:utils.Context, country, *, info):
         """Sends text to the set spacenews channel"""
         with utils.Embed(use_random_colour=True) as e:
@@ -158,6 +161,7 @@ class BaseCords(utils.Cog):
 
     @utils.command()
     @commands.has_permissions(manage_roles=True)
+    @commands.guild_only()
     async def setcountry(self, ctx:utils.Context, member : discord.Member, role : discord.Role):
         """Gives a user a role"""
         await member.add_roles(role)
@@ -166,6 +170,7 @@ class BaseCords(utils.Cog):
         
     @utils.command()
     @commands.has_permissions(manage_roles=True)
+    @commands.guild_only()
     async def removecountry(self, ctx:utils.Context, member : discord.Member, roletoremove : discord.Role):
         await member.remove_roles(roletoremove)
         embedvar = discord.Embed(title = f'Succesfully Removed The Role!', description = f'Succesfully Removed {roletoremove.mention} From {member.mention}!', color=0x059fff)
@@ -174,17 +179,17 @@ class BaseCords(utils.Cog):
     @utils.command()
     async def roll(self, ctx:utils.Context, sides:int):
         '''Roll A Dice And Go!'''
-        await ctx.send(f'Grabbing The D{sides}')
         for _ in range(1):
             roll = randint(1, int(sides))
             
             
-        sembed = discord.Embed(title = f'I Rolled Your D{sides}', description = f'***These Results Are Purely Random***', color = 0x059fff)
+        sembed = discord.Embed(title = f'I Rolled a {sides}', color = 0x059fff)
         sembed.add_field(name='Roll: ', value=roll, inline=True)
         sembed.add_field(name='Dice: ', value=f'D{sides}', inline=True)
         await ctx.send(embed = sembed)
             
     @utils.command(aliases=['wnr'])
+    @commands.guild_only()
     async def worldnewsrole(self, ctx:utils.Context):
         """Give you the worldnews role"""
         async with self.bot.database() as db:
