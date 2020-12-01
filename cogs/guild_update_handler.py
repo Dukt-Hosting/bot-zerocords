@@ -63,6 +63,7 @@ class GuildUpdateHandler(utils.Cog):
     @utils.Cog.listener()
     async def on_guild_channel_update(self, before:discord.TextChannel, after:discord.TextChannel):
         async for entry in before.guild.audit_logs(action=discord.AuditLogAction.channel_update, limit=1):
+            changed = False
             if entry.user.bot == True:
                 break
             with utils.Embed(use_random_colour=True) as embed:
@@ -70,10 +71,13 @@ class GuildUpdateHandler(utils.Cog):
                 embed.description = f"**#{before.name} was updated!**"
                 embed.set_author_to_user(entry.user)
                 if before.name != after.name:
+                    changed = True
                     embed.add_field(name="Name", value=f"**{before.name} => {after.name}**")
                 if before.category != after.category:
+                    Changed = True
                     embed.add_field(name="Category", value=f"**{before.category.name} => {after.category.name}**")
                 if before.topic != after.topic:
+                    Changed = True
                     before_topic = before.topic
                     if not before.topic:
                         before_topic = "None"
@@ -86,20 +90,21 @@ class GuildUpdateHandler(utils.Cog):
                     if len(after_topic) > 50:
                         after_topic = after.topic[:50] + '...'
                     embed.add_field(name="Topic", value=f"**{before_topic} => {after_topic}**")
-                if before.position != after.position:
-                    embed.add_field(name="Position", value=f"**{before.position} => {after.position}**")
                 if before.slowmode_delay != after.slowmode_delay:
+                    changed=True
                     embed.add_field(name="Slowmode Delay", value=f"**{before.slowmode_delay} => {after.slowmode_delay}  **")
+        if changed == True:
+            channel_id = self.bot.guild_settings[before.guild.id].get("guild_update_channel_id")
+            channel = self.bot.get_channel(channel_id)
+            if channel is None:
+                return
 
-        channel_id = self.bot.guild_settings[before.guild.id].get("guild_update_channel_id")
-        channel = self.bot.get_channel(channel_id)
-        if channel is None:
+            try:
+                await channel.send(embed=embed)
+            except discord.Forbidden:
+                pass
+        else:
             return
-
-        try:
-            await channel.send(embed=embed)
-        except discord.Forbidden:
-            pass
     
     @utils.Cog.listener()
     async def on_member_ban(self, guild:discord.Guild, user:discord.Member):
