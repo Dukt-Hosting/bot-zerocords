@@ -172,8 +172,7 @@ class BaseCords(utils.Cog):
         sembed.add_field(name='Roll: ', value=roll, inline=True)
         sembed.add_field(name='Dice: ', value=f'D{sides}', inline=True)
         await ctx.send(embed = sembed)
-        
-
+            
     @utils.command(aliases=['wnr'])
     async def worldnewsrole(self, ctx:utils.Context):
         """Give you the worldnews role"""
@@ -185,6 +184,8 @@ class BaseCords(utils.Cog):
         else:
             await ctx.author.add_roles(ctx.guild.get_role(news_role))
             await ctx.send('Gave you the world news role.')
+
+
 """
     @utils.command()
     async def wiki(self, ctx:utils.Context, *, countryname):
