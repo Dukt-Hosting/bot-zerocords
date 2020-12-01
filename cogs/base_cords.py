@@ -67,17 +67,22 @@ class BaseCords(utils.Cog):
         for name in channeltypes:
             channel = await ctx.guild.create_text_channel(
                 f"{countryprefix}-{name}",
-                reason=f"Country ({countryprefix}) channels created, command ran by {ctx.author.name}({ctx.author.id})",
+                reason=f"Company ({countryprefix}) channels created, command ran by {ctx.author.name}({ctx.author.id})",
                 topic=f"{categoryname} - {name} ",
                 category=category,
             )
         prichannel = await ctx.guild.create_text_channel(
             f"{countryprefix}-private",
-            reason=f"Country ({countryprefix}) channels created, command ran by {ctx.author.name}({ctx.author.id})",
+            reason=f"Company ({countryprefix}) channels created, command ran by {ctx.author.name}({ctx.author.id})",
             topic=f"{categoryname} - private",
             category=category,
         )
-        role = await ctx.guild.create_role(reason='ZeroCords - Auto made a countrys role', hoist=True, name=categoryname)
+        voicechannel = await ctx.guild.create_voice_channel(
+            f"{countryprefix}-voice",
+            reason=f"Company ({countryprefix}) channels created, command ran by {ctx.author.name}({ctx.author.id})",
+            category=category,
+        )
+        role = await ctx.guild.create_role(reason=f'ZeroCords - Auto made a company role{ctx.author.name}({ctx.author.id})', hoist=True, name=categoryname)
         await prichannel.set_permissions(role, read_messages=True)
         await prichannel.set_permissions(ctx.guild.default_role, read_messages=False)
         await user.add_roles(role)
