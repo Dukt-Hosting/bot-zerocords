@@ -14,6 +14,12 @@ Zerocords is built with [discord.py](https://github.com/Rapptz/discord.py) and [
 - Caterized Roleplay Commands
 - And much more coming soon!
 
+# Contributers
+
+ * `Owner - SpicyTakis / Hentai#8349`
+ 
+ * `Lead Conributer - fadedmax / Faded Max#1420`
+ 
 # ZeroCords Commands
 
 ## BaseCords
