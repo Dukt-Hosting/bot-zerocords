@@ -18,7 +18,7 @@ Zerocords is built with [discord.py](https://github.com/Rapptz/discord.py) and [
 
  * `Owner - SpicyTakis / Hentai#8349`
  
- * `Lead Conributer - fadedmax / Faded Max#1420`
+ * `Lead Contributer - fadedmax / Faded Max#1420`
  
 # ZeroCords Commands
 
