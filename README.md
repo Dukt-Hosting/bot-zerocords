@@ -20,6 +20,20 @@ Zerocords is built with [discord.py](https://github.com/Rapptz/discord.py) and [
  
  * `Lead Contributer - fadedmax / Faded Max#1420`
  
+# How to setup
+
+## Regular
+	
+If you are just going to be using a the normal bot, setup is fairly simple with around 2 steps.
+
+`z!setup`
+
+Then after that react to the message the bot sends with the options you want to set!
+	
+## Self Hosted
+
+###### GUIDE COMING SOON
+
 # ZeroCords Commands
 
 ## BaseCords
