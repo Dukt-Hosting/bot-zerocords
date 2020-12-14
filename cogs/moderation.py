@@ -334,7 +334,7 @@ class ModerationCommands(utils.Cog):
         dm_reason = f"You have been kicked from **{ctx.guild.name}** with the reason `{reason}`."
         try:
             await user.send(dm_reason)
-        except discord.Forbidden:
+        except (discord.Forbidden, discord.HTTPException):
             pass  # Can't DM the user? Oh well
 
         # Kick the user
