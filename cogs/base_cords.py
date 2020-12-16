@@ -140,7 +140,7 @@ class BaseCords(utils.Cog):
             e.title=country.upper()
             e.description=info
             e.set_author_to_user(ctx.author)
-            await channel.send(f'<@&{news_role[0]["news_role"]}>', embed = e)
+            await channel.send(f'<@&{news_role[0]["news_role"]}>' if news_role[0]["news_role"] else None, embed = e)
         
     @utils.command(aliases=['sn'])
     @commands.has_permissions(send_messages=True)
@@ -157,7 +157,7 @@ class BaseCords(utils.Cog):
             e.title=country
             e.description=info
             e.set_author_to_user(ctx.author)
-            await channel.send(f'<@&{news_role[0]["news_role"]}>', embed=e)
+            await channel.send(f'<@&{news_role[0]["news_role"]}>' if news_role[0]["news_role"] else None, embed=e)
 
     @utils.command()
     @commands.has_permissions(manage_roles=True)
