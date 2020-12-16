@@ -128,7 +128,7 @@ class BaseCords(utils.Cog):
     @utils.command(aliases=['wn'])
     @commands.has_permissions(send_messages=True)
     @commands.guild_only()
-    async def worldnews(self, ctx:utils.Context, country, *, info):
+    async def worldnews(self, ctx:utils.Context, country:str, *, info:str):
         """Sends text to the set worldnews channel"""
         with utils.Embed(use_random_colour=True) as e:
             async with self.bot.database() as db:
@@ -145,7 +145,7 @@ class BaseCords(utils.Cog):
     @utils.command(aliases=['sn'])
     @commands.has_permissions(send_messages=True)
     @commands.guild_only()
-    async def spacenews(self, ctx:utils.Context, country, *, info):
+    async def spacenews(self, ctx:utils.Context, country:str, *, info:str):
         """Sends text to the set spacenews channel"""
         with utils.Embed(use_random_colour=True) as e:
             async with self.bot.database() as db:
