@@ -86,7 +86,7 @@ class InfractionHandler(utils.Cog):
     @utils.group(aliases=['infraction'], invoke_without_command=True)
     @localutils.checks.is_guild_moderator()
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
-    async def infractions(self, ctx:utils.Context, user_id:utils.converters.UserID):
+    async def infractions(self, ctx:utils.Context):
         """
         The parent to be able to see user infractions.
         """
