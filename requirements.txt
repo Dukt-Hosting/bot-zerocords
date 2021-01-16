@@ -1,1 +1,2 @@
 voxelbotutils
+discord-py-slash-command

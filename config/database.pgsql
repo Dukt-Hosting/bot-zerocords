@@ -33,6 +33,12 @@ CREATE TABLE IF NOT EXISTS role_list(
 );
 
 
+CREATE TABLE IF NOT EXISTS channel_templates(
+    guild_id BIGINT,
+    template_data VARCHAR(2500)
+);
+
+
 CREATE TABLE IF NOT EXISTS channel_list(
     guild_id BIGINT,
     channel_id BIGINT,
