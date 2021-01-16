@@ -86,7 +86,7 @@ class InfractionHandler(utils.Cog):
     @utils.group(aliases=['infraction'], invoke_without_command=True)
     @localutils.checks.is_guild_moderator()
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
-    async def infractions(self, ctx:utils.Context, user_id:utils.converters.UserID):
+    async def infractions(self, ctx:utils.Context):
         """
         The parent to be able to see user infractions.
         """
@@ -94,7 +94,14 @@ class InfractionHandler(utils.Cog):
         # Make sure there was no subcommand invoked
         if ctx.invoked_subcommand is not None:
             return
-
+    
+    @infractions.command()
+    @localutils.checks.is_guild_moderator()
+    @commands.bot_has_permissions(send_messages=True, embed_links=True)
+    async def get(self, ctx:utils.Context, user_id:utils.converters.UserID):
+        """
+        The parent to be able to see user infractions.
+        """
         # Grab their infractions from the database
         async with self.bot.database() as db:
             rows = await db("SELECT * FROM infractions WHERE guild_id=$1 AND user_id=$2 AND deleted_by IS NULL ORDER BY timestamp DESC", ctx.guild.id, user_id)
@@ -103,8 +110,8 @@ class InfractionHandler(utils.Cog):
 
         # And pagination time babey
         pages = menus.MenuPages(source=InfractionSource(rows, per_page=5), clear_reactions_after=True, delete_message_after=True)
-        await pages.start(ctx)
-
+        await pages.start(ctx)  
+                                                                         
     @infractions.command()
     @localutils.checks.is_guild_moderator()
     @commands.bot_has_permissions(send_messages=True)
