@@ -464,7 +464,10 @@ class Music(utils.Cog):
         This command automatically searches from various sites if no URL is provided.
         A list of these sites can be found here: https://rg3.github.io/youtube-dl/supportedsites.html
         """
-
+         
+        if ctx.guild.id = 208895639164026880:
+            return await ctx.send('Did you really think you could play music in Voxel Fox? Ha Ha.')
+        
         if not ctx.voice_state.voice:
             await ctx.invoke(self._join)
 
