@@ -1,3 +1,6 @@
 __pycache__/
 config/config.toml
 app.log
+ffplay.exe
+ffprobe.exe
+ffmpeg.exe
