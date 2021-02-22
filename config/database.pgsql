@@ -53,6 +53,12 @@ EXCEPTION
     WHEN duplicate_object THEN null;
 END $$;
 
+DO $$ BEGIN
+    CREATE TYPE difficulty AS ENUM ('low', 'medium', 'hard', 'insane');
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+
 CREATE TABLE IF NOT EXISTS infractions(
     infraction_id VARCHAR(10) PRIMARY KEY,
     guild_id BIGINT,
@@ -84,3 +90,24 @@ CREATE TABLE IF NOT EXISTS temporary_removed_roles(
     key VARCHAR(50),
     PRIMARY KEY (guild_id, role_id, user_id)
 );
+
+CREATE TABLE IF NOT EXISTS currentMatchs(
+    guild_id BIGINT,
+    user_one_id BIGINT,
+    user_two_id BIGINT,
+    user_one_country VARCHAR(30),
+    user_two_country VARCHAR(30),
+    difficulty difficulty,
+    map_id BIGINT,
+    user_one_resource_displacement BIGINT,
+    user_two_resource_displacement BIGINT
+);
+
+CREATE TABLE IF NOT EXISTS availableMaps(
+    guild_id BIGINT,    
+    name VARCHAR(30),
+    environment VARCHAR(50),
+    climate VARCHAR(100),
+    mapTime VARCHAR(50),
+    imageUrl VARCHAR(1000)
+)
