@@ -13,23 +13,30 @@ class BotSettings(utils.Cog):
 
         if ctx.invoked_subcommand is not None:
             return
-
+        
+        settings_mention = utils.SettingsMenuOption.get_guild_settings_mention
+        
         menu = utils.SettingsMenu()
-        menu.bulk_add_options(
-            ctx,
-            {
-                'display': "Moderation Settings",
-                'callback': self.bot.get_command("setup mod"),
-            },
-            {
-                'display': "Modlog Settings",
-                'callback': self.bot.get_command("setup modlog"),
-            },
-            {
-                'display': "GeoPolitical Roleplay Settings",
-                'callback': self.bot.get_command("setup georp"),
-            },
+        menu.add_multiple_options(
+            utils.SettingsMenuOption(
+                ctx=ctx,
+                display=lambda x: 'Moderation Settings',
+                callback=self.bot.get_command('setup mod'),
+            ),
+            
+            utils.SettingsMenuOption(
+                ctx=ctx,
+                display=lambda x: 'Modlog Settings',
+                callback=self.bot.get_command('setup modlog'),
+            ),
+            
+            utils.SettingsMenuOption(
+                ctx=ctx,
+                display=lambda x: 'GeoPolitical Roleplay Settings',
+                callback=self.bot.get_command('setup georp'),
+            ),
         )
+        
         try:
             await menu.start(ctx)
             await ctx.send("Done setting up!")
@@ -48,19 +55,35 @@ class BotSettings(utils.Cog):
         # Create settings menu
         menu = utils.SettingsMenu()
         settings_mention = utils.SettingsMenuOption.get_guild_settings_mention
-        menu.bulk_add_options(
-            ctx,
-            {
-                'display': lambda c: "Set moderator role (currently {0})".format(settings_mention(c, 'guild_moderator_role_id')),
-                'converter_args': [("What do you want to set the moderator role to?", "moderator role", commands.RoleConverter)],
-                'callback': utils.SettingsMenuOption.get_set_guild_settings_callback('guild_settings', 'guild_moderator_role_id'),
-            },
-            {
-                'display': lambda c: "Set mute role (currently {0})".format(settings_mention(c, 'muted_role_id')),
-                'converter_args': [("What do you want to set the mute role to?", "mute role", commands.RoleConverter)],
-                'callback': utils.SettingsMenuOption.get_set_guild_settings_callback('guild_settings', 'muted_role_id'),
-            },
+        
+        menu.add_multiple_options(
+            utils.SettingsMenuOption(
+                ctx=ctx,
+                display=lambda x: 'Set moderator role (currently {0})'.format(settings_mention(x, 'guild_moderator_role_id')),
+                converter_args=(
+                    utils.SettingsMenuConverter(
+                        prompt='What do you want to set the moderator role to?',
+                        asking_for='moderator role',
+                        converter=commands.RoleConverter,
+                    ),
+                ),
+                callback=utils.SettingsMenuOption.get_set_guild_settings_callback('guild_settings', 'guild_moderator_role_id')
+            ),
+            
+            utils.SettingsMenuOption(
+                ctx=ctx,
+                display=lambda x: 'Set mute role (currently {0})'.format(settings_mention(x, 'muted_role_id')),
+                converter_args=(
+                    utils.SettingsMenuConverter(
+                        prompt='What do you want to set the mute role to?',
+                        asking_for='mute role',
+                        converter=commands.RoleConverter,
+                    ),
+                ),
+                callback=utils.SettingsMenuOption.get_set_guild_settings_callback('guild_settings', 'muted_role_id')
+            ),
         )
+
         try:
             await menu.start(ctx)
         except utils.errors.InvokedMetaCommand:
@@ -73,6 +96,48 @@ class BotSettings(utils.Cog):
 
         menu = utils.SettingsMenu()
         settings_mention = utils.SettingsMenuOption.get_guild_settings_mention
+        
+        menu.add_multiple_options(
+            utils.SettingsMenuOption(
+                ctx=ctx,
+                display=lambda x: 'hi there'.format(settings_mention(x, 'column')),
+                converter_args=(
+                    utils.SettingsMenuConverter(
+                        prompt='What do you want to set X to?',
+                        asking_for='X',
+                        converter=commands.xconverter,
+                    ),
+                ),
+                callback=x
+            ),
+            
+            utils.SettingsMenuOption(
+                ctx=ctx,
+                display=lambda x: 'hi there'.format(settings_mention(x, 'column')),
+                converter_args=(
+                    utils.SettingsMenuConverter(
+                        prompt='What do you want to set X to?',
+                        asking_for='X',
+                        converter=commands.xconverter,
+                    ),
+                ),
+                callback=x
+            ),
+            
+            utils.SettingsMenuOption(
+                ctx=ctx,
+                display=lambda x: 'hi there'.format(settings_mention(x, 'column')),
+                converter_args=(
+                    utils.SettingsMenuConverter(
+                        prompt='What do you want to set X to?',
+                        asking_for='X',
+                        converter=commands.xconverter,
+                    ),
+                ),
+                callback=x
+            ),
+        )
+        
         menu.bulk_add_options(
             ctx,
             {
@@ -122,7 +187,9 @@ class BotSettings(utils.Cog):
             },
         )
         try:
-            await menu.start(ctx)
+            # await menu.start(ctx)
+            await ctx.send('Modlogs are currently being revamped.')
+            await ctx.ack()
         except utils.errors.InvokedMetaCommand:
             pass
     
@@ -138,23 +205,46 @@ class BotSettings(utils.Cog):
         # Create settings menu
         menu = utils.SettingsMenu()
         settings_mention = utils.SettingsMenuOption.get_guild_settings_mention
-        menu.bulk_add_options(
-            ctx,
-            {
-                'display': lambda c: "Set Worldnews channel (currently {0})".format(settings_mention(c, 'worldnews_channel')),
-                'converter_args': [("What do you want to set the Worldnews channel to?", "Worldnews Channel", commands.TextChannelConverter)],
-                'callback': utils.SettingsMenuOption.get_set_guild_settings_callback('guild_settings', 'worldnews_channel'),
-            },
-            {
-                'display': lambda c: "Set Spacenews channel (currently {0})".format(settings_mention(c, 'spacenews_channel')),
-                'converter_args': [("What do you want to set the Spacenews channel to?", "Spacenews Channel", commands.TextChannelConverter)],
-                'callback': utils.SettingsMenuOption.get_set_guild_settings_callback('guild_settings', 'spacenews_channel'),
-            },
-            {
-                'display': lambda c: "Set News notification role (currently {0})".format(settings_mention(c, 'news_role')),
-                'converter_args': [("What do you want to set News Notification Role to?", "News Notification Role", commands.RoleConverter)],
-                'callback': utils.SettingsMenuOption.get_set_guild_settings_callback('guild_settings', 'news_role'),
-            }
+        
+        menu.add_multiple_options(
+            utils.SettingsMenuOption(
+                ctx=ctx,
+                display=lambda x: 'Set Worldnews channel (currently {0})'.format(settings_mention(x, 'worldnews_channel')),
+                converter_args=(
+                    utils.SettingsMenuConverter(
+                        prompt='What do you want to set the Worldnews channel to?',
+                        asking_for='Worldnews Channel',
+                        converter=commands.TextChannelConverter,
+                    ),
+                ),
+                callback=utils.SettingsMenuOption.get_set_guild_settings_callback('guild_settings', 'worldnews_channel')
+            ),
+            
+            utils.SettingsMenuOption(
+                ctx=ctx,
+                display=lambda x: 'Set Spacenews channel (currently {0})'.format(settings_mention(x, 'spacenews_channel')),
+                converter_args=(
+                    utils.SettingsMenuConverter(
+                        prompt='What do you want to set the Spacenews channel to?',
+                        asking_for='Spacenews Channel',
+                        converter=commands.TextChannelConverter,
+                    ),
+                ),
+                callback=utils.SettingsMenuOption.get_set_guild_settings_callback('guild_settings', 'spacenews_channel')
+            ),
+            
+            utils.SettingsMenuOption(
+                ctx=ctx,
+                display=lambda x: 'Set News Role channel (currently {0})'.format(settings_mention(x, 'news_role')),
+                converter_args=(
+                    utils.SettingsMenuConverter(
+                        prompt='What do you want to set News Role to?',
+                        asking_for='News Role',
+                        converter=commands.TextChannelConverter,
+                    ),
+                ),
+                callback=utils.SettingsMenuOption.get_set_guild_settings_callback('guild_settings', 'news_role')
+            ),
         )
         try:
             await menu.start(ctx)
