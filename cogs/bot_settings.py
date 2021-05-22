@@ -240,7 +240,7 @@ class BotSettings(utils.Cog):
                     utils.SettingsMenuConverter(
                         prompt='What do you want to set News Role to?',
                         asking_for='News Role',
-                        converter=commands.TextChannelConverter,
+                        converter=commands.RoleConverter,
                     ),
                 ),
                 callback=utils.SettingsMenuOption.get_set_guild_settings_callback('guild_settings', 'news_role')
