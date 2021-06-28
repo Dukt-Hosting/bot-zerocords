@@ -100,11 +100,15 @@ class BaseCords(utils.Cog):
     @utils.command(aliases=['rcs'])
     @commands.has_permissions(manage_channels=True)
     @commands.guild_only()
-    async def removechannelsets(self, ctx:utils.Context, categoryid:int):
+    async def removechannelsets(self, ctx: utils.Context, categoryid: int):
         """Removes channels from a category"""
         async with self.bot.database() as db:
             audit_channel = await db("SELECT audit_channel FROM guild_settings WHERE guild_id=$1", ctx.guild.id)
+            
         cat = self.bot.get_channel(categoryid)
+        if cat is None:
+            return await ctx.send('Invalid category ID!')
+        
         cachename = cat.name
         for role in ctx.guild.roles:
             if role.name == cachename:
