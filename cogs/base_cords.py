@@ -109,6 +109,8 @@ class BaseCords(utils.Cog):
             cat = self.bot.get_channel(categoryid)
         except NotFound:
             return await ctx.send('That category could not be found. Make sure you copied the correct ID and that the bot has permission to access it.')
+        if cat is None:
+            return await ctx.send('That category could not be found. Make sure you copied the correct ID and that the bot has permission to access it.')
         
         cachename = cat.name
         for role in ctx.guild.roles:
