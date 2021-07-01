@@ -119,9 +119,7 @@ class BaseCords(utils.Cog):
         for role in ctx.guild.roles:
             if role.name == cachename:
                 await role.delete()
-        for channel in cat.text_channels:
-            await channel.delete()
-        for channel in cat.voice_channels:
+        for channel in cat.channels:
             await channel.delete()
         await cat.delete()
         await ctx.send(f'Removed the channels from {cachename}')
