@@ -105,8 +105,9 @@ class BaseCords(utils.Cog):
         async with self.bot.database() as db:
             audit_channel = await db("SELECT audit_channel FROM guild_settings WHERE guild_id=$1", ctx.guild.id)
             
-        cat = self.bot.get_channel(categoryid)
-        if cat is None:
+        try:
+            cat = self.bot.get_channel(categoryid)
+        except NotFound:
             return await ctx.send('That category could not be found. Make sure you copied the correct ID and that the bot has permission to access it.')
         
         cachename = cat.name
