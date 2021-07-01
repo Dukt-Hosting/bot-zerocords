@@ -112,6 +112,9 @@ class BaseCords(utils.Cog):
         if cat is None:
             return await ctx.send('That category could not be found. Make sure you copied the correct ID and that the bot has permission to access it.')
         
+        if cat.type is not discord.ChannelType.category:
+            return await ctx.send(f'Expected the ID of a channel category, received a `{cat.type}` channel. Please copy the correct ID and try again.')
+        
         cachename = cat.name
         for role in ctx.guild.roles:
             if role.name == cachename:
